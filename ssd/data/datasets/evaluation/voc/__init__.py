@@ -22,7 +22,7 @@ def voc_evaluation(dataset, predictions, output_dir, iteration=None):
         gt_boxes, gt_labels, is_difficult = annotation
         gt_boxes_list.append(gt_boxes)
         gt_labels_list.append(gt_labels)
-        gt_difficults.append(is_difficult.astype(np.bool))
+        gt_difficults.append(is_difficult.astype(np.bool_))
 
         img_info = dataset.get_img_info(i)
         prediction = predictions[i]

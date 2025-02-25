@@ -1,16 +1,15 @@
 import os
 
-
 class DatasetCatalog:
-    DATA_DIR = 'datasets'
+    DATA_DIR = "/content/VOC2007/"
     DATASETS = {
-        'voc_2007_train': {
-            "data_dir": "VOC2007",
+        'voc_train': {
+            "data_dir": DATA_DIR,
             "split": "train"
         },
-        'voc_2007_val': {
-            "data_dir": "VOC2007",
-            "split": "val"
+        'voc_test': {
+            "data_dir": DATA_DIR,
+            "split": "test"
         },
         'voc_2007_trainval': {
             "data_dir": "VOC2007",
