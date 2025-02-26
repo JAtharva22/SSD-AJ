@@ -4,18 +4,18 @@ import cv2
 import numpy as np
 from PIL import Image
 from torchvision import transforms
+from ssd.modeling.detector import build_detection_model
 # from your_model_module import build_model  # Import your SSD model builder here
 
 # Example class names; update as needed to match your training classes.
 class_names = {
     0: 'background',
-    1: 'person',
-    2: 'car',
+    1: 'grenade',
+    2: 'gun',
     3: 'knife',
-    4: 'gun',
-    5: 'pistol',
-    # add more classes...
+    4: 'pistol',
 }
+# 'grenade', 'gun', 'knife', 'pistol'
 
 # Define a transform that should match the preprocessing during training.
 def get_transform():
@@ -31,7 +31,7 @@ def get_transform():
 def load_model(model_path, device):
     # Build the model architecture
     # For example: model = build_model()   <-- adjust to your implementation
-    model = build_model()  # Replace with your actual model builder function
+    model = build_detection_model()  # Replace with your actual model builder function
     checkpoint = torch.load(model_path, map_location=device)
     model.load_state_dict(checkpoint['model_state_dict'])
     model.to(device)
