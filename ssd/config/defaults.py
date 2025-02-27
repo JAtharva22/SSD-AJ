@@ -1,5 +1,5 @@
 from yacs.config import CfgNode as CN
-from ssd import default_classes
+from ssd.default import default_classes
 
 _C = CN()
 
