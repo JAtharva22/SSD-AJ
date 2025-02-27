@@ -6,13 +6,13 @@ MODEL:
 INPUT:
   IMAGE_SIZE: 300
 DATASETS:
-  TRAIN: ("voc_2007_trainval", "voc_2012_trainval")
-  TEST: ("voc_2007_test", )
+  TRAIN: ("voc_train", )
+  TEST: ("voc_test", )
 SOLVER:
-  MAX_ITER: 160000
-  LR_STEPS: [105000, 135000]
+  MAX_ITER: 10000
+  LR_STEPS: [6000, 8000]
   GAMMA: 0.1
   BATCH_SIZE: 24
   LR: 1e-3
 
-OUTPUT_DIR: "outputs/efficient_net_b3_ssd300_voc0712"
+OUTPUT_DIR: "/content/SSD/outputs/efficient_net_b3_ssd300_voc0712"
