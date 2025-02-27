@@ -4,11 +4,13 @@ import numpy as np
 import xml.etree.ElementTree as ET
 from PIL import Image
 
+from ssd import class_names_defined
 from ssd.structures.container import Container
 
 
 class VOCDataset(torch.utils.data.Dataset):
-    class_names = ('__background__', 'grenade', 'gun', 'knife', 'pistol')
+    
+    class_names = tuple(class_names_defined.values())
 
     def __init__(self, data_dir, split, transform=None, target_transform=None, keep_difficult=False):
         """Dataset for VOC data.

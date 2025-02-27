@@ -11,9 +11,8 @@ dist/
 *.pth
 *.pkl
 *.npy
-
+venv/
 # ipython/jupyter notebooks
-*.ipynb
 **/.ipynb_checkpoints/
 
 # Editor temporaries
@@ -25,3 +24,6 @@ dist/
 # Pycharm editor settings
 .idea
 .DS_Store
+
+outputs/
+pynb_files/

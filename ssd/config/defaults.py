@@ -1,4 +1,5 @@
 from yacs.config import CfgNode as CN
+from ssd import default_classes
 
 _C = CN()
 
@@ -7,7 +8,7 @@ _C.MODEL.META_ARCHITECTURE = 'SSDDetector'
 _C.MODEL.DEVICE = "cuda"
 # match default boxes to any ground truth with jaccard overlap higher than a threshold (0.5)
 _C.MODEL.THRESHOLD = 0.5
-_C.MODEL.NUM_CLASSES = 21
+_C.MODEL.NUM_CLASSES = default_classes
 # Hard negative mining
 _C.MODEL.NEG_POS_RATIO = 3
 _C.MODEL.CENTER_VARIANCE = 0.1
