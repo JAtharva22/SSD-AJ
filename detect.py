@@ -8,7 +8,7 @@ import cv2
 import numpy as np
 from PIL import Image
 
-from ssd import class_names_defined
+from ssd.default import class_names_defined
 from ssd.config import cfg
 from ssd.modeling.detector import build_detection_model
 

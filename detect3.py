@@ -1,19 +1,12 @@
 import os
 import cv2
 import torch
+from ssd.default import class_names_defined
 from ssd.config import cfg
 from ssd.modeling.detector import build_detection_model
 from ssd.utils.checkpoint import CheckPointer
 from ssd.data.transforms import build_transforms
 from ssd.utils import mkdir
-
-class_names_defined = {
-    0: "background",
-    1: "grenade",
-    2: "gun",
-    3: "knife",
-    4: "pistol",
-}
 
 def load_model(config_file, checkpoint_file, device='cuda'):
     if device == 'cuda' and not torch.cuda.is_available():
@@ -75,6 +68,7 @@ def draw_boxes(image, boxes, labels, scores, class_names):
     return image
 
 def predict(loaded_model, config_file, input_images, output_dir, threshold=0.5):
+    
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     cfg.merge_from_file(config_file)
     cfg.freeze()

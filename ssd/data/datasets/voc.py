@@ -4,7 +4,7 @@ import numpy as np
 import xml.etree.ElementTree as ET
 from PIL import Image
 
-from ssd import class_names_defined
+from ssd.default import class_names_defined
 from ssd.structures.container import Container
 
 

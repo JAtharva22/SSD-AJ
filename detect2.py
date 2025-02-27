@@ -1,7 +1,7 @@
 import os
 import cv2
 import torch
-from ssd import class_names_defined
+from ssd.default import class_names_defined
 from ssd.config import cfg
 from ssd.modeling.detector import build_detection_model
 from ssd.utils.checkpoint import CheckPointer
