@@ -26,5 +26,7 @@ venv/
 .DS_Store
 
 outputs/
-pynb_files/
+ip_images/
+op_images/
+models_pth/
 op_images/

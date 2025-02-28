@@ -12,20 +12,18 @@ def load_model(config_file, checkpoint_file, device='cuda'):
     if device == 'cuda' and not torch.cuda.is_available():
         device = 'cpu'
         print("CUDA is not available, using CPU instead")
-    elif device != 'cuda':
-        device = 'cpu'
-        print("Using CPU")
     # Load the configuration file
-    cfg.merge_from_file(config_file)
-    cfg.freeze()
+    a = cfg.clone()
+    a.merge_from_file(config_file)
+    a.freeze()
 
     # Build the model
-    model = build_detection_model(cfg)
+    model = build_detection_model(a)
     model.to(device)
     model.eval()
 
     # Load the checkpoint
-    checkpointer = CheckPointer(model, save_dir=cfg.OUTPUT_DIR)
+    checkpointer = CheckPointer(model, save_dir=a.OUTPUT_DIR)
     checkpointer.load(checkpoint_file, use_latest=True)
 
     return model
@@ -70,11 +68,12 @@ def draw_boxes(image, boxes, labels, scores, class_names):
 def predict(loaded_model, config_file, input_images, output_dir, threshold=0.5):
     
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    cfg.merge_from_file(config_file)
-    cfg.freeze()
+    b = cfg.clone()
+    b.merge_from_file(config_file)
+    b.freeze()
 
     # Get the transformation
-    transform = build_transforms(cfg, is_train=False)
+    transform = build_transforms(b, is_train=False)
 
     # Make sure the output directory exists
     mkdir(output_dir)
@@ -98,7 +97,7 @@ def predict(loaded_model, config_file, input_images, output_dir, threshold=0.5):
         boxes, labels, scores = postprocess_results(results, threshold)
 
         normalized_bbox = []
-        image_size = cfg.INPUT.IMAGE_SIZE
+        image_size = b.INPUT.IMAGE_SIZE
         for box in boxes:
             normalized_bbox.append(
             [box[0].item() / image_size, 
