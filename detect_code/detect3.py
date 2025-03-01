@@ -8,16 +8,14 @@ from ssd.utils.checkpoint import CheckPointer
 from ssd.data.transforms import build_transforms
 from ssd.utils import mkdir
 
-def load_model(config_file, checkpoint_file, device='cuda'):
-    if device == 'cuda' and not torch.cuda.is_available():
-        device = 'cpu'
-        print("CUDA is not available, using CPU instead")
+def load_model(config_file, checkpoint_file):
     # Load the configuration file
     a = cfg.clone()
     a.merge_from_file(config_file)
     a.freeze()
 
-    # Build the model
+    # Build the model# Choose device and build model
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = build_detection_model(a)
     model.to(device)
     model.eval()

@@ -20,7 +20,11 @@ venv/
 *.swo
 *.swp
 *~
+# Jupyter Notebook files
+*.ipynb
 
+# Jupyter Notebook checkpoint directories
+.ipynb_checkpoints
 # Pycharm editor settings
 .idea
 .DS_Store
@@ -30,3 +34,4 @@ ip_images/
 op_images/
 models_pth/
 op_images/
+pynb_files/
