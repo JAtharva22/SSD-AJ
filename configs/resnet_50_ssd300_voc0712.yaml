@@ -1,0 +1,31 @@
+MODEL:
+  NUM_CLASSES: 3         # 20 object classes + background for VOC
+  META_ARCHITECTURE: "SSDDetector"
+  BACKBONE:
+    NAME: "resnet50"
+    # The backbone is expected to output four feature maps:
+    # layer2: 512, layer3: 1024, layer4: 2048, extra_layer: 512
+    OUT_CHANNELS: (512, 1024, 2048, 512)
+  BOX_HEAD:
+    # Use the default box head (adjust if using SSDLite)
+    NAME: "SSDBoxHead"
+    PREDICTOR: "SSDBoxPredictor"
+  PRIORS:
+    FEATURE_MAPS: [38, 19, 10, 5]  # spatial sizes of the feature maps
+    STRIDES: [8, 16, 32, 64]       # stride of each feature map relative to input
+    MIN_SIZES: [30, 60, 111, 162]   # min box sizes
+    MAX_SIZES: [60, 111, 162, 213]  # max box sizes
+    ASPECT_RATIOS: [[2], [2, 3], [2, 3], [2]]  # aspect ratios per feature map
+    BOXES_PER_LOCATION: [4, 6, 6, 4]
+INPUT:
+  IMAGE_SIZE: 300
+DATASETS:
+  TRAIN: ("voc_train", )
+  TEST: ("voc_test", )
+SOLVER:
+  MAX_ITER: 10000
+  LR_STEPS: [6000, 8000]
+  LR: 1e-3
+  GAMMA: 0.1
+  BATCH_SIZE: 24
+OUTPUT_DIR: "/content/output"
