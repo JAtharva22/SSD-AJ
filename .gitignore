@@ -32,7 +32,6 @@ venv/
 outputs/
 ip_images/
 op_images/
-models_pth/
 op_images/
 pynb_files/
 info_model/

@@ -1,0 +1,35 @@
+MODEL:
+  NUM_CLASSES: 3        
+  META_ARCHITECTURE: "SSDDetector"
+  BACKBONE:
+    NAME: "InceptionV3"
+    # The backbone is expected to output six feature maps:
+    # Feature 1: Mixed_5d -> 288 channels
+    # Feature 2: Mixed_6e -> 768 channels
+    # Feature 3: Mixed_7c -> 2048 channels
+    # Feature 4: extra1   -> 512 channels
+    # Feature 5: extra2   -> 256 channels
+    # Feature 6: extra3   -> 256 channels
+    OUT_CHANNELS: (288, 768, 2048, 512, 256, 256)
+  BOX_HEAD:
+    NAME: "SSDBoxHead"
+    PREDICTOR: "SSDBoxPredictor"
+  PRIORS:
+    FEATURE_MAPS: [38, 19, 10, 5, 3, 2]    # example spatial sizes
+    STRIDES: [8, 16, 30, 60, 100, 150]       # approximate strides relative to input
+    MIN_SIZES: [30, 60, 111, 162, 213, 264]   # example minimum box sizes
+    MAX_SIZES: [60, 111, 162, 213, 264, 315]   # example maximum box sizes
+    ASPECT_RATIOS: [[2], [2, 3], [2, 3], [2, 3], [2], [2]]
+    BOXES_PER_LOCATION: [4, 6, 6, 4, 4, 4]
+INPUT:
+  IMAGE_SIZE: 300
+DATASETS:
+  TRAIN: ("voc_train", )
+  TEST: ("voc_test", )
+SOLVER:
+  MAX_ITER: 10000
+  LR_STEPS: [6000, 8000]
+  LR: 1e-3
+  GAMMA: 0.1
+  BATCH_SIZE: 24
+OUTPUT_DIR: "/content/output"
