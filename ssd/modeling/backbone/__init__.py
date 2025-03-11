@@ -4,8 +4,9 @@ from .mobilenet import MobileNetV2
 from .efficient_net import EfficientNet
 from .mobilenetv3 import MobileNetV3
 from .resnet50 import ResNet50
+from .effnet_new import EfficientNetB3
 
-__all__ = ['build_backbone', 'VGG', 'MobileNetV2', 'EfficientNet', 'MobileNetV3', 'ResNet50']
+__all__ = ['build_backbone', 'VGG', 'MobileNetV2', 'EfficientNet', 'MobileNetV3', 'ResNet50', 'EfficientNetB3']
 
 
 def build_backbone(cfg):
