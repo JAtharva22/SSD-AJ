@@ -1,0 +1,28 @@
+MODEL:
+  NUM_CLASSES: 3
+  META_ARCHITECTURE: "SSDDetector"
+  BACKBONE:
+    NAME: "efficientnet_b3"
+    OUT_CHANNELS: (32, 48, 96, 232, 512, 256)  # Matches backbone outputs
+  PRIORS:
+    FEATURE_MAPS: [75, 38, 19, 10, 5, 3]    # Updated to match backbone feature sizes
+    STRIDES: [4, 8, 16, 30, 60, 100]         # Approximate strides (300/feature_size)
+    MIN_SIZES: [15, 30, 60, 111, 162, 213]    # Example sizes
+    MAX_SIZES: [30, 60, 111, 162, 213, 264]    # Example sizes
+    ASPECT_RATIOS: [[2], [2], [2,3], [2,3], [2], [2]]
+    BOXES_PER_LOCATION: [4, 4, 6, 6, 4, 4]
+  BOX_HEAD:
+    NAME: "SSDBoxHead"
+    PREDICTOR: "SSDBoxPredictor"
+INPUT:
+  IMAGE_SIZE: 300
+DATASETS:
+  TRAIN: ("voc_train", )
+  TEST: ("voc_test", )
+SOLVER:
+  MAX_ITER: 10000
+  LR_STEPS: [6000, 8000]
+  LR: 1e-3
+  GAMMA: 0.1
+  BATCH_SIZE: 24
+OUTPUT_DIR: "/content/output"
