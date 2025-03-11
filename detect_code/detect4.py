@@ -36,7 +36,7 @@ def postprocess_results(results, threshold=0.1):
     keep = scores > threshold
     return boxes[keep], labels[keep], scores[keep]
 
-def predict(loaded_model, config_file, input_images, threshold=0.3):
+def predict(loaded_model, config_file, image_path, threshold=0.3):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     b = cfg.clone()
     b.merge_from_file(config_file)
@@ -46,33 +46,32 @@ def predict(loaded_model, config_file, input_images, threshold=0.3):
     transform = build_transforms(b, is_train=False)
     results_list = []
 
-    for image_path in input_images:
-        # Read the image
-        image = cv2.imread(image_path)
-        if image is None:
-            raise ValueError("Input image is empty or not loaded properly.")
+    # Read the image
+    image = cv2.imread(image_path)
+    if image is None:
+        raise ValueError("Input image is empty or not loaded properly.")
 
-        # Preprocess the image
-        image = preprocess_image(image, transform).to(device)
+    # Preprocess the image
+    image = preprocess_image(image, transform).to(device)
 
-        # Run inference
-        with torch.no_grad():
-            results = loaded_model(image)
+    # Run inference
+    with torch.no_grad():
+        results = loaded_model(image)
 
-        # Post-process the results
-        boxes, labels, scores = postprocess_results(results, threshold)
+    # Post-process the results
+    boxes, labels, scores = postprocess_results(results, threshold)
 
-        normalized_bbox = []
-        image_size = b.INPUT.IMAGE_SIZE
-        for box in boxes:
-            normalized_bbox.append(
-                [box[0].item() / image_size, 
-                    box[1].item() / image_size,
-                    box[2].item() / image_size,
-                    box[3].item() / image_size]
-            )
+    normalized_bbox = []
+    image_size = b.INPUT.IMAGE_SIZE
+    for box in boxes:
+        normalized_bbox.append(
+            [box[0].item() / image_size, 
+                box[1].item() / image_size,
+                box[2].item() / image_size,
+                box[3].item() / image_size]
+        )
 
-        results_list.append((normalized_bbox, labels, scores))
+    results_list.append((normalized_bbox, labels, scores))
 
     return results_list
 

@@ -95,7 +95,7 @@ def predict_with_models(models, config_files, img_path, ind_model_threshold=0.3)
             continue
         
         print(f"\nPredicting with model {i+1}")   
-        res = predict(model, config_files[i], [img_path], threshold=ind_model_threshold)
+        res = predict(loaded_model=model, config_file=config_files[i], image_path=img_path, threshold=ind_model_threshold)
         print(res)
 # def predict(loaded_model, config_file, input_images, threshold=0.5):        
         final_bb.append(res[0][0])
@@ -219,7 +219,7 @@ if __name__ == "__main__":
         print(f"\n\nRunning detection on image: {img_path}")
         boxes, scores, labels = detector.detect(
             img_path=img_path,
-            conf_filter=0.15,
+            conf_filter=0.2,
             iou_threshold=0.4,
             ind_model_threshold=0.3
         )
