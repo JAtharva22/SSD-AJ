@@ -3,7 +3,7 @@ MODEL:
   META_ARCHITECTURE: "SSDDetector"
   BACKBONE:
     NAME: "efficientnet_b3"
-    OUT_CHANNELS: (32, 48, 96, 232, 512, 256)  # Matches backbone outputs
+    OUT_CHANNELS: (32, 48, 96, 232, 512, 1024)  # Matches backbone outputs
   PRIORS:
     FEATURE_MAPS: [75, 38, 19, 10, 5, 3]    # Updated to match backbone feature sizes
     STRIDES: [4, 8, 16, 30, 60, 100]         # Approximate strides (300/feature_size)

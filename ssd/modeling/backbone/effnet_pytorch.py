@@ -22,7 +22,7 @@ class EfficientNetB3(nn.Module):
             nn.ReLU(inplace=True)
         )
         self.extra_conv2 = nn.Sequential(
-            nn.Conv2d(512, 256, kernel_size=3, stride=2, padding=1),  # Expected output: 256 channels; ~3x3 -> 1x1
+            nn.Conv2d(512, 1024, kernel_size=3, stride=2, padding=1),  # Expected output: 256 channels; ~3x3 -> 1x1
             nn.ReLU(inplace=True)
         )
 
