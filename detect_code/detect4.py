@@ -33,7 +33,6 @@ def preprocess_image(image, transform):
 
 def postprocess_results(results, threshold=0.1):
     boxes, labels, scores = results[0]['boxes'], results[0]['labels'], results[0]['scores']
-    print("@@@@@@ ", threshold, " @@@@@@")
     keep = scores > threshold
     return boxes[keep], labels[keep], scores[keep]
 

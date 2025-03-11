@@ -219,6 +219,7 @@ if __name__ == "__main__":
         print(f"\n\nRunning detection on image: {img_path}")
         boxes, scores, labels = detector.detect(
             img_path=img_path,
+            conf_filter=0.15,
             iou_threshold=0.4,
             ind_model_threshold=0.3
         )
