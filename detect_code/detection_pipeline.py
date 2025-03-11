@@ -1,17 +1,16 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """
 Weapon Detection System using Ensemble of SSD Models
 This module provides functions for weapon detection using multiple SSD models.
 """
+import sys
+sys.path.append('/home/atharvaj/Desktop/SSD/ssd')
 
 import os
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 from ensemble_boxes import weighted_boxes_fusion
-from detect_code.detect3 import load_model, predict
+from detect4 import load_model, predict
 from ssd.default import class_names_defined
 
 def load_models(config_files, checkpoint_files):
@@ -61,41 +60,16 @@ def predict_with_models(models, config_files, img_path, output_dir):
             continue
         
         print(f"Predicting with model {i+1}")   
-        res = predict(model, config_files[i], img_path, output_dir)
-        
-        final_bb.append(res[0])
-        final_scores.append(res[1].cpu().numpy().tolist())
-        final_conf.append(res[2].cpu().numpy().tolist())
+        res = predict(model, config_files[i], [img_path])
+        print(res)
+# def predict(loaded_model, config_file, input_images, threshold=0.5):        
+        final_bb.append(res[0][0])
+        final_scores.append(res[0][1].cpu().numpy().tolist())
+        final_conf.append(res[0][2].cpu().numpy().tolist())
     
     return final_bb, final_scores, final_conf
 
-def apply_ensemble(boxes_list, scores_list, labels_list, weights, iou_thr=0.5, skip_box_thr=0.0001, conf_type='box_and_model_avg'):
-    """
-    Apply weighted boxes fusion to ensemble predictions from multiple models.
-    
-    Args:
-        boxes_list (list): List of bounding boxes from each model
-        scores_list (list): List of confidence scores from each model
-        labels_list (list): List of class labels from each model
-        weights (list): Weights for each model
-        iou_thr (float, optional): IoU threshold for box fusion. Default is 0.5.
-        skip_box_thr (float, optional): Threshold to skip low-confidence boxes. Default is 0.0001.
-        conf_type (str, optional): Confidence type for weighted boxes fusion. Default is 'box_and_model_avg'.
-        
-    Returns:
-        tuple: Fused boxes, scores, and labels
-    """
-    return weighted_boxes_fusion(
-        boxes_list=boxes_list,
-        scores_list=scores_list, 
-        labels_list=labels_list, 
-        weights=weights,
-        iou_thr=iou_thr, 
-        skip_box_thr=skip_box_thr,
-        conf_type=conf_type
-    )
-
-def visualize_results(img_path, boxes, scores, labels, output_dir=None, save=False):
+def save_results(img_path, boxes, scores, labels, output_dir=None):
     """
     Visualize detection results on the image.
     
@@ -146,7 +120,7 @@ def visualize_results(img_path, boxes, scores, labels, output_dir=None, save=Fal
         ax.add_patch(rect)
         
         # Add label
-        class_name = class_names_defined.get(int(label), f"Class {int(label)}")
+        class_name = class_names_defined.get(int(label)+1, f"Class {int(label)}")
         label_text = f"{class_name}: {score:.2f}"
         plt.text(x1, y1-2, label_text,
                 color='white',
@@ -157,13 +131,15 @@ def visualize_results(img_path, boxes, scores, labels, output_dir=None, save=Fal
     
     plt.axis('off')
     
-    if save and output_dir:
+    if output_dir:
         os.makedirs(output_dir, exist_ok=True)
         output_path = os.path.join(output_dir, f"detection_{os.path.basename(img_path)}")
         plt.savefig(output_path, bbox_inches='tight', dpi=300)
         print(f"Visualization saved to {output_path}")
+    else:
+        plt.show()
     
-    plt.show()
+    plt.close()
 
 def validate_inputs(config_files, checkpoint_files, model_weights, img_path):
     """
@@ -206,8 +182,7 @@ def validate_inputs(config_files, checkpoint_files, model_weights, img_path):
     return True
 
 def run_detection(config_files, checkpoint_files, model_weights, img_path, output_dir,
-                 iou_threshold=0.5, skip_box_threshold=0.0001, conf_type='box_and_model_avg',
-                 visualize=False, save_visualization=False):
+                 iou_threshold=0.5, skip_box_threshold=0.0001, conf_type='box_and_model_avg'):
     """
     Run the complete weapon detection pipeline.
     
@@ -252,27 +227,32 @@ def run_detection(config_files, checkpoint_files, model_weights, img_path, outpu
     
     # Apply ensemble
     print("Applying weighted boxes fusion...")
-    boxes, scores, labels = apply_ensemble(
-        boxes_list, scores_list, labels_list, 
-        model_weights, iou_threshold, skip_box_threshold, conf_type
-    )
+    boxes, scores, labels = weighted_boxes_fusion(
+                                boxes_list=boxes_list,
+                                scores_list=scores_list, 
+                                labels_list=labels_list, 
+                                weights=model_weights,
+                                iou_thr=iou_threshold, 
+                                skip_box_thr=skip_box_threshold,
+                                conf_type=conf_type
+                            )
     
     # Print results
     print("\nDetection Results:")
-    for i, (score, label) in enumerate(zip(scores, labels)):
-        class_name = class_names_defined.get(int(label), f"Class {int(label)}")
+    for i, (box, score, label) in enumerate(zip(boxes, scores, labels)):
+        labelInt = int(label)+1
+        class_name = class_names_defined.get(labelInt, f"Class {labelInt}")
         print(f"Detection {i+1}: {class_name} (Confidence: {score:.4f})")
+        print(f"Bounding Box: {box}")
+        print()
     
-    # Visualize results if requested
-    if visualize or save_visualization:
-        visualize_results(
-            img_path, 
-            boxes, 
-            scores, 
-            labels, 
-            output_dir,
-            save_visualization
-        )
+    save_results(
+        img_path, 
+        boxes, 
+        scores, 
+        labels, 
+        output_dir,
+    )
     
     print("Detection completed successfully")
     return boxes, scores, labels
@@ -295,14 +275,17 @@ if __name__ == "__main__":
         "/home/atharvaj/Desktop/SSD/models_pth/resnet50-v1.pth"
     ]
     
-    model_weights = [0.4, 0.3, 0.3]
+    model_weights = [0.4915, 0.6202, 0.6111, 0.6858]
+    
+    iou_threshold = 0.3    
     
     # Run the detection pipeline
     boxes, scores, labels = run_detection(
         config_files=config_files,
         checkpoint_files=checkpoint_files,
         model_weights=model_weights,
-        img_path="/path/to/image.jpg",
-        output_dir="/path/to/output",
-        visualize=False
+        img_path="/home/atharvaj/Desktop/SSD/ip_images/blackman-gun.jpg",
+        # img_path="/home/atharvaj/Desktop/SSD/ip_images/gun-knife-2.png",
+        output_dir="/home/atharvaj/Desktop/SSD/op_images",
+        iou_threshold=iou_threshold,
     )
