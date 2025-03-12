@@ -204,8 +204,6 @@ if __name__ == "__main__":
     # Initialize detector once
     detector = WeaponDetector(config_files, checkpoint_files, model_weights)
     
-    # image_paths = "/home/atharvaj/Desktop/SSD/ip_images/blackman-gun.jpg",
-
     # Run detection on multiple images
     image_paths = [
         "/home/atharvaj/Desktop/SSD/ip_images/blackman-gun.jpg",
@@ -225,6 +223,6 @@ if __name__ == "__main__":
             boxes, 
             scores, 
             labels, 
-            output_dir="/home/atharvaj/Desktop/SSD/op_images",
+            output_dir="/op_images",
         )
 '''
