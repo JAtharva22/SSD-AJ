@@ -4,3 +4,4 @@ yacs
 tqdm
 opencv-python
 vizer
+ensemble-boxes
