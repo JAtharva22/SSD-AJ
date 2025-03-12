@@ -1,6 +1,3 @@
-import sys
-sys.path.append('/home/atharvaj/Desktop/SSD/ssd')
-
 import os
 import cv2
 import matplotlib.pyplot as plt
@@ -185,7 +182,7 @@ def save_results(img_path, boxes, scores, labels, output_dir=None):
     
     plt.close()
 
-
+'''
 # Example usage
 if __name__ == "__main__":
     config_files = [
@@ -230,4 +227,4 @@ if __name__ == "__main__":
             labels, 
             output_dir="/home/atharvaj/Desktop/SSD/op_images",
         )
-        
+'''
