@@ -1,5 +1,5 @@
 MODEL:
-  NUM_CLASSES: 3
+  NUM_CLASSES: 4
   BACKBONE:
     NAME: "efficient_net-b3"
     OUT_CHANNELS: (48, 136, 384, 256, 256, 256)

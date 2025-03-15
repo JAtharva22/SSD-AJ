@@ -1,5 +1,5 @@
 MODEL:
-  NUM_CLASSES: 3
+  NUM_CLASSES: 4
   BOX_HEAD:
     PREDICTOR: "SSDLiteBoxPredictor"
   BACKBONE:
@@ -21,7 +21,7 @@ SOLVER:
   MAX_ITER: 10000
   LR_STEPS: [6000, 8000]
   GAMMA: 0.1
-  BATCH_SIZE: 32
+  BATCH_SIZE: 24
   LR: 1e-3
 
 OUTPUT_DIR: "outputs/mobilenet_v3_ssd320_voc0712"

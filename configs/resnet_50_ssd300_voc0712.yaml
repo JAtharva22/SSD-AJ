@@ -1,5 +1,5 @@
 MODEL:
-  NUM_CLASSES: 3         # 20 object classes + background for VOC
+  NUM_CLASSES: 4
   META_ARCHITECTURE: "SSDDetector"
   BACKBONE:
     NAME: "resnet50"

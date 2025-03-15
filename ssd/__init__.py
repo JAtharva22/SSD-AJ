@@ -1,7 +1,8 @@
-default_classes = 3
+default_classes = 4
 
 class_names_defined = {
     0: "background",
     1: "gun",
-    2: "knife",
+    2: "heavy-weapon",
+    3: "knife",
 }
