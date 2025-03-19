@@ -28,4 +28,4 @@ SOLVER:
   LR: 1e-3
   GAMMA: 0.1
   BATCH_SIZE: 24
-OUTPUT_DIR: "/content/output"
+OUTPUT_DIR: "outputs/resnet_50_ssd300_voc0712"

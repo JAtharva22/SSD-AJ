@@ -15,4 +15,4 @@ SOLVER:
   BATCH_SIZE: 24
   LR: 1e-3
 
-OUTPUT_DIR: "/content/SSD/outputs/efficient_net_b3_ssd300_voc0712"
+OUTPUT_DIR: "outputs/efficient_net_b3_ssd300_voc0712"
