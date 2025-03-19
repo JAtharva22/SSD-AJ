@@ -25,3 +25,6 @@ class_names_defined = {
     2: "heavy-weapon",
     3: "knife",
 }
+
+nms_threshold = 0.45
+start_data_dir = "/content/VOC2007/"

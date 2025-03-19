@@ -1,5 +1,5 @@
 from yacs.config import CfgNode as CN
-from ssd.default import default_classes
+from ssd.default import default_classes, nms_threshold
 
 _C = CN()
 
@@ -88,7 +88,7 @@ _C.SOLVER.WARMUP_ITERS = 500
 # Specific test options
 # ---------------------------------------------------------------------------- #
 _C.TEST = CN()
-_C.TEST.NMS_THRESHOLD = 0.45
+_C.TEST.NMS_THRESHOLD = nms_threshold
 _C.TEST.CONFIDENCE_THRESHOLD = 0.01
 _C.TEST.MAX_PER_CLASS = -1
 _C.TEST.MAX_PER_IMAGE = 100

@@ -1,14 +1,14 @@
 import os
+from ssd.default import start_data_dir
 
 class DatasetCatalog:
-    DATA_DIR = "/content/VOC2007/"
     DATASETS = {
         'voc_train': {
-            "data_dir": DATA_DIR,
+            "data_dir": start_data_dir,
             "split": "train"
         },
         'voc_test': {
-            "data_dir": DATA_DIR,
+            "data_dir": start_data_dir,
             "split": "test"
         },
         'voc_2007_trainval': {
@@ -56,7 +56,7 @@ class DatasetCatalog:
     @staticmethod
     def get(name):
         if "voc" in name:
-            voc_root = DatasetCatalog.DATA_DIR
+            voc_root = start_data_dir
             if 'VOC_ROOT' in os.environ:
                 voc_root = os.environ['VOC_ROOT']
 
@@ -67,7 +67,7 @@ class DatasetCatalog:
             )
             return dict(factory="VOCDataset", args=args)
         elif "coco" in name:
-            coco_root = DatasetCatalog.DATA_DIR
+            coco_root = start_data_dir
             if 'COCO_ROOT' in os.environ:
                 coco_root = os.environ['COCO_ROOT']
 
