@@ -1,3 +1,5 @@
+# this file is to detect the object in the image using cli
+
 import os
 import cv2
 import torch

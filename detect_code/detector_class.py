@@ -30,7 +30,7 @@ class WeaponDetector:
                 models.append(None)
         return models
     
-    def detect(self, img_path, conf_filter=0.3, ind_model_threshold=0.3, iou_threshold=0.5, skip_box_threshold=0.0001,conf_type='box_and_model_avg'):
+    def detect(self, img_path, ind_model_threshold, conf_filter=0.3, iou_threshold=0.5, skip_box_threshold=0.0001, conf_type='box_and_model_avg'):
         """Run detection on a single image."""
         if not os.path.exists(img_path):
             print(f"Error: Image file not found: {img_path}")
@@ -68,7 +68,7 @@ class WeaponDetector:
         print(labels)
         return boxes, scores, labels
 
-def predict_with_models(models, config_files, img_path, ind_model_threshold=0.3):
+def predict_with_models(models, config_files, img_path, ind_model_threshold):
     """
     Run prediction with multiple models on a single image.
     
@@ -91,7 +91,7 @@ def predict_with_models(models, config_files, img_path, ind_model_threshold=0.3)
             continue
         
         print(f"\nPredicting with model {i+1}")   
-        res = predict(loaded_model=model, config_file=config_files[i], image_path=img_path, threshold=ind_model_threshold)
+        res = predict(loaded_model=model, config_file=config_files[i], image_path=img_path, threshold=ind_model_threshold[i])
         print(res)
 # def predict(loaded_model, config_file, input_images, threshold=0.5):        
         final_bb.append(res[0][0])

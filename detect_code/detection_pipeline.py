@@ -1,6 +1,7 @@
 """
 Weapon Detection System using Ensemble of SSD Models
 This module provides functions for weapon detection using multiple SSD models.
+Funxtional programming of detecting the object
 """
 import sys
 sys.path.append('/home/atharvaj/Desktop/SSD/ssd')
