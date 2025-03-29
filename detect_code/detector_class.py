@@ -30,7 +30,16 @@ class WeaponDetector:
                 models.append(None)
         return models
     
-    def detect(self, img_path, ind_model_threshold, conf_filter=0.3, iou_threshold=0.5, skip_box_threshold=0.0001, conf_type='box_and_model_avg'):
+    def detect(
+        self, 
+        img_path: str, 
+        ind_model_threshold: list, 
+        conf_scaling_factor: list, 
+        conf_filter=0.3, 
+        iou_threshold=0.5, 
+        skip_box_threshold=0.0001, 
+        conf_type='box_and_model_avg'
+        ):
         """Run detection on a single image."""
         if not os.path.exists(img_path):
             print(f"Error: Image file not found: {img_path}")
@@ -38,7 +47,7 @@ class WeaponDetector:
         
         # Run predictions
         boxes_list, labels_list, scores_list = predict_with_models(
-            self.models, self.config_files, img_path, ind_model_threshold
+            self.models, self.config_files, img_path, ind_model_threshold, conf_scaling_factor
         )
         
         # Apply ensemble
@@ -68,7 +77,7 @@ class WeaponDetector:
         print(labels)
         return boxes, scores, labels
 
-def predict_with_models(models, config_files, img_path, ind_model_threshold):
+def predict_with_models(models, config_files, img_path, ind_model_threshold: list, conf_scaling_factor: list):
     """
     Run prediction with multiple models on a single image.
     
@@ -82,7 +91,7 @@ def predict_with_models(models, config_files, img_path, ind_model_threshold):
         tuple: Lists of bounding boxes, class scores, and confidence scores
     """
     final_bb = []
-    final_scores = []
+    final_labels = []
     final_conf = []
     
     for i, model in enumerate(models):
@@ -93,12 +102,14 @@ def predict_with_models(models, config_files, img_path, ind_model_threshold):
         print(f"\nPredicting with model {i+1}")   
         res = predict(loaded_model=model, config_file=config_files[i], image_path=img_path, threshold=ind_model_threshold[i])
         print(res)
-# def predict(loaded_model, config_file, input_images, threshold=0.5):        
+        
         final_bb.append(res[0][0])
-        final_scores.append(res[0][1].cpu().numpy().tolist())
-        final_conf.append(res[0][2].cpu().numpy().tolist())
+        final_labels.append(res[0][1].cpu().numpy().tolist())
+        # Scale confidence scores
+        resConfAfterScalingFactor = res[0][2].cpu().numpy().tolist() * conf_scaling_factor[i]
+        final_conf.append(resConfAfterScalingFactor)
     
-    return final_bb, final_scores, final_conf
+    return final_bb, final_labels, final_conf
 
 
 # # Example usage
