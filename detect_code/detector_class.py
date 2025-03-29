@@ -106,7 +106,8 @@ def predict_with_models(models, config_files, img_path, ind_model_threshold: lis
         final_bb.append(res[0][0])
         final_labels.append(res[0][1].cpu().numpy().tolist())
         # Scale confidence scores
-        resConfAfterScalingFactor = res[0][2].cpu().numpy().tolist() * conf_scaling_factor[i]
+        confList: list = res[0][2].cpu().numpy().tolist()
+        resConfAfterScalingFactor = confList * conf_scaling_factor[i]
         final_conf.append(resConfAfterScalingFactor)
     
     return final_bb, final_labels, final_conf
