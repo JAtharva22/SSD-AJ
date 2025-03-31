@@ -35,10 +35,10 @@ class WeaponDetector:
         img_path: str, 
         ind_model_threshold: list, 
         conf_scaling_factor: list, 
+        conf_type: str,
         conf_filter=0.3, 
         iou_threshold=0.5, 
         skip_box_threshold=0.0001, 
-        conf_type='box_and_model_avg'
         ):
         """Run detection on a single image."""
         if not os.path.exists(img_path):
@@ -49,6 +49,8 @@ class WeaponDetector:
         boxes_list, labels_list, scores_list = predict_with_models(
             self.models, self.config_files, img_path, ind_model_threshold, conf_scaling_factor
         )
+        
+        print(self.model_weights, iou_threshold, skip_box_threshold, conf_type) 
         
         # Apply ensemble
         boxes, scores, labels = weighted_boxes_fusion(

@@ -37,7 +37,6 @@ def postprocess_results(results, threshold=0.1):
     return boxes[keep], labels[keep], scores[keep]
 
 def predict(loaded_model, config_file, image_path, threshold=0.3):
-    print(threshold)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     b = cfg.clone()
     b.merge_from_file(config_file)
