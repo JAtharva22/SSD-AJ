@@ -26,5 +26,5 @@ class_names_defined = {
     3: "knife",
 }
 
-nms_threshold = 0.45
+nms_threshold = 0.55
 start_data_dir = "/content/VOC2007/"
